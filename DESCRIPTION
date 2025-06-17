@@ -1,0 +1,8 @@
+Package: wellbeingR
+Title: Utilities for Wellbeing Spectrum Analysis
+Version: 0.0.1
+Authors@R: person("Researcher", "One", email = "researcher@example.com", role = c("aut", "cre"))
+Description: Helper functions for the wellbeing spectrum Mendelian randomization project.
+License: MIT
+Encoding: UTF-8
+LazyData: true
