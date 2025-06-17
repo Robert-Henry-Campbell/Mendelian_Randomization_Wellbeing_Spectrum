@@ -12,6 +12,10 @@ Thumbs.db
 # Ignore environment folders
 env/
 venv/
+.env/
+.venv/
+.Renv/
+renv/
 
 # Ignore logs and outputs
 *.log
@@ -25,4 +29,3 @@ data/
 
 # Ignore VS Code settings
 .vscode/
-ferguspaper/
