@@ -1,6 +1,8 @@
 import pandas as pd
 import os
-import requests
+from pathlib import Path
+
+from gwas.eqtl_checker import fetch_snp_info
 
 
 # accepts rsid, returns b38 variant id in GTEX format
@@ -8,47 +10,15 @@ import requests
 
 
 
-def fetch_snp_info(rs_id):
-    # NCBI dbSNP API base URL
-    url = f'https://clinicaltables.nlm.nih.gov/api/snps/v3/search?terms={rs_id}'
-    # Send the request to the dbSNP API
-    response = requests.get(url)
-    
-    if response.status_code == 200:
-        data = response.json()
-
-        # Extracting the specific data
-        # Assuming the data is always in the third list and it's the first sub-list
-        chromosome = data[3][0][1]
-        position = str(int(data[3][0][2])+1) # Convert to integer and add 1
-        allele_change = data[3][0][3]
-        if len(allele_change) != 3:
-            mutations = allele_change.split(',')
-            #strip the whitespace from mutations
-            mutations = [mutation.strip() for mutation in mutations]
-            index = GWAS_df.index[GWAS_df['RS'] == rs_id].tolist()
-            if len(index) != 1:
-                input('trouble with the index wow wow wow')
-            proposed_allele_change = str(GWAS_df['A2'].loc[index[0]] + '/' + GWAS_df['A1'].loc[index[0]])
-            #check if proposed allele change is in the list of mutations
-            if proposed_allele_change in mutations:
-                allele_change = proposed_allele_change
-            else:
-                input('error: allele change not in list of mutations')
-            
-        variant_id = f'chr{chromosome}_{position}_{allele_change[0]}_{allele_change[2]}_b38'
-        print(variant_id)    
-        return variant_id
-
-
-os.chdir("C:\\Users\\username\\OneDrive - Imperial College London\\Documents\\0Oxford_main\\fergus paper\\code_main")
-
-GTEX_directory_path = 'GTEX_BRAIN_ONLY/'
-GWAS_directory_path = 'GWAS_hits/'
+# Set base directory relative to this script
+BASE_DIR = Path(__file__).resolve().parent.parent
+GTEX_directory_path = BASE_DIR / 'GTEX_BRAIN_ONLY'
+GWAS_directory_path = BASE_DIR / 'GWAS_hits'
+OUTPUT_DIR = BASE_DIR / 'output'
 
 # List all files in the specified directory
-GTEX_file_names = [f for f in os.listdir(GTEX_directory_path ) if os.path.isfile(os.path.join(GTEX_directory_path , f))]
-GWAS_file_names = [f for f in os.listdir(GWAS_directory_path) if os.path.isfile(os.path.join(GWAS_directory_path, f))]
+GTEX_file_names = [f.name for f in GTEX_directory_path.iterdir() if f.is_file()]
+GWAS_file_names = [f.name for f in GWAS_directory_path.iterdir() if f.is_file()]
 
 #eQTL merge for each file in the directory 
 
@@ -60,14 +30,14 @@ for GWAS_file_path in GWAS_file_names:
     for GTEX_file_path in GTEX_file_names:
 
         # Read the files
-        GTEX_df = pd.read_csv(GTEX_directory_path+GTEX_file_path, sep='\t')  # Use tab as delimiter
-        GWAS_df = pd.read_csv(GWAS_directory_path+GWAS_file_path, sep=',')  # Use , as delimiter
+        GTEX_df = pd.read_csv(GTEX_directory_path / GTEX_file_path, sep='\t')  # Use tab as delimiter
+        GWAS_df = pd.read_csv(GWAS_directory_path / GWAS_file_path, sep=',')  # Use , as delimiter
 
 
         # Display the first few rows of the DataFrame to verify it's loaded correctly
 
         #Now: we create a new column in the GWAS dataframe that contains the SNP ID in the format of the GTEX dataframe
-        GWAS_df['variant_id'] = GWAS_df['RS'].apply(fetch_snp_info)
+        GWAS_df['variant_id'] = GWAS_df['RS'].apply(lambda rs: fetch_snp_info(rs, GWAS_df))
 
         
         #GWAS_df['variant_id_1'] = 'chr'+GWAS_df['CHR'].astype(str) +'_' + GWAS_df['BP'].astype(str) + '_' + GWAS_df['A1'] + '_' + GWAS_df['A2'] + '_b38'
@@ -84,5 +54,6 @@ for GWAS_file_path in GWAS_file_names:
         print(GTEX_file_path + "|" + "eQTLs_df size: " + str(GWAS_eQTLs_df.shape[0]))
 
         #save as a csv
-        GWAS_eQTLs_df.to_csv("output/"+ GWAS_file_path + ' ' + GTEX_file_path + 'eQTLs_.csv', index=False)
+        out_file = OUTPUT_DIR / f"{GWAS_file_path} {GTEX_file_path}eQTLs_.csv"
+        GWAS_eQTLs_df.to_csv(out_file, index=False)
 print('bobo')
