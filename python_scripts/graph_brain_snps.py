@@ -18,12 +18,18 @@ for file in Path(brain_eqtl_directory).glob('Indep. Signals AVG DS.*'):
 
 # for each region df, return filtered df of only filtered snps in that df
 filtered_region_snps = {}
-#filtered_region_snps_for_df = {}
+filtered_region_snps_for_df = {}
 for idx,region in enumerate(unfiltered_region_snps.keys()):
     filtered_region_snps[f'{region}_filtered'] = set(unfiltered_region_snps[region]['RS']).intersection(set(filtered_snps['x']))
-    #filtered_region_snps_for_df[f'{region}_filtered'] = list(set(unfiltered_region_snps[region]['RS']).intersection(set(filtered_snps['x'])))
+    filtered_region_snps_for_df[f'{region}_filtered'] = list(set(unfiltered_region_snps[region]['RS']).intersection(set(filtered_snps['x'])))
+
+#pad the lists to make coherent df
+max_len = max(len(lst) for lst in filtered_region_snps_for_df.values())
+for key in filtered_region_snps_for_df:
+    filtered_region_snps_for_df[key] += [None] * (max_len - len(filtered_region_snps_for_df[key]))
+
 filtered_region_snps_df = pd.DataFrame(filtered_region_snps_for_df)
-#filtered_region_snps_df.to_csv('Mendelian_Randomization_Wellbeing_Spectrum\data\processed\\brain_region_filter\\filtered_region_SNPs.csv')
+filtered_region_snps_df.to_csv('Mendelian_Randomization_Wellbeing_Spectrum\data\processed\\brain_region_filter\\filtered_region_SNPs.csv')
 
 
 filtered_region_snps_count = {}
