@@ -41,7 +41,7 @@ def main(base_dir: Path) -> None:
     vep_results = get_vep_data(snp_list)
     vep_df = parse_vep_results(vep_results)
     df = pd.merge(df, vep_df, on="SNP", how="left")
-    output_path = base_dir / "VEP_output" / "Clustered_SNPS_for_gene_ontology_annotation_with_VEP.csv"
+    output_path = base_dir / "data" / "processed" / "VEP_output" / "Clustered_SNPS_for_gene_ontology_annotation_with_VEP.csv"
     df.to_csv(output_path, index=False)
 
 

@@ -29,9 +29,9 @@ def fetch_snp_info(rs_id: str, gwas_df: pd.DataFrame) -> str:
 
 
 def main(base_dir: Path) -> None:
-    gtex_dir = base_dir / "GTEX_BRAIN_ONLY"
-    gwas_dir = base_dir / "GWAS_hits"
-    output_dir = base_dir / "output"
+    gtex_dir = base_dir / "data" / "raw" / "GTEX_BRAIN_ONLY"
+    gwas_dir = base_dir / "data" / "raw" / "GWAS_hits"
+    output_dir = base_dir / "data" / "processed" / "output"
 
     gtex_files = [f.name for f in gtex_dir.iterdir() if f.is_file()]
     gwas_files = [f.name for f in gwas_dir.iterdir() if f.is_file()]

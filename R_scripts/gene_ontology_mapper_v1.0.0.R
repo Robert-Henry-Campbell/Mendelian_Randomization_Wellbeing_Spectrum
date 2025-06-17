@@ -15,7 +15,7 @@ setwd(args[1])
 
 rm(list = ls())
 
-gene_data <- read.csv("code_main/VEP_output/Clustered_SNPS_for_gene_ontology_annotation_with_VEP.csv")
+gene_data <- read.csv("data/processed/VEP_output/Clustered_SNPS_for_gene_ontology_annotation_with_VEP.csv")
 
 gene_data_ENSG_only <- gene_data[gene_data$Gene_ID != "", ]
 
