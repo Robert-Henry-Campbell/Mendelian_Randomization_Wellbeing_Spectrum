@@ -23,3 +23,15 @@ The `scripts/` directory contains small command line tools. Each script accepts 
   ```
 
 Set `DATA_DIR` to control the default output/input directories.
+
+## R analysis
+
+R scripts live in `src/r_scripts/`. They can be executed with `Rscript` and typically
+expect the analysis directory as the first argument.
+
+```bash
+Rscript src/r_scripts/gene_ontology_mapper_v1.0.0.R /path/to/analysis_dir
+```
+
+A minimal package skeleton in the `R/` directory provides a place for shared
+functions (`DESCRIPTION` and `NAMESPACE`).
