@@ -1,0 +1,17 @@
+name: wellbeing
+channels:
+  - conda-forge
+  - bioconda
+  - defaults
+  - r
+dependencies:
+  - python=3.10
+  - pandas
+  - requests
+  - r-base
+  - r-tidyverse
+  - bioconductor-clusterprofiler
+  - bioconductor-org.hs.eg.db
+  - bioconductor-biomart
+  - bioconductor-gosemsim
+  - bioconductor-topgo
