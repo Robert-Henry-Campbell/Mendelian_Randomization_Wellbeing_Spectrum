@@ -29,3 +29,6 @@ data/
 
 # Ignore VS Code settings
 .vscode/
+
+# Ignore Windows system files
+desktop.ini
