@@ -35,3 +35,12 @@ Rscript src/r_scripts/gene_ontology_mapper_v1.0.0.R /path/to/analysis_dir
 
 A minimal package skeleton in the `R/` directory provides a place for shared
 functions (`DESCRIPTION` and `NAMESPACE`).
+
+## Testing
+
+Python tests are written with `pytest`. Install requirements and run tests from the repository root:
+
+```bash
+pip install -r requirements.txt
+pytest
+```
