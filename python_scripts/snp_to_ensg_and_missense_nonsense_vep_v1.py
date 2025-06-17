@@ -11,13 +11,13 @@ def main(base_dir: Path) -> None:
 
     vep_results = get_vep_data(snp_list)
     coding_variants_df = filter_coding_variants(vep_results)
-    # coding_variants_df.to_csv(base_dir / "VEP_output" / "Clustered_SNPS_for_gene_ontology_annotation_with_coding_variants.csv", index=False)
+    # coding_variants_df.to_csv(base_dir / "data" / "processed" / "VEP_output" / "Clustered_SNPS_for_gene_ontology_annotation_with_coding_variants.csv", index=False)
 
     vep_df = parse_vep_results(vep_results)
     print(vep_df)
 
     df = pd.merge(df, vep_df, on="SNP", how="left")
-    df.to_csv(base_dir / "VEP_output" / "Clustered_SNPS_for_gene_ontology_annotation_with_VEP.csv", index=False)
+    df.to_csv(base_dir / "data" / "processed" / "VEP_output" / "Clustered_SNPS_for_gene_ontology_annotation_with_VEP.csv", index=False)
 
 
 if __name__ == "__main__":

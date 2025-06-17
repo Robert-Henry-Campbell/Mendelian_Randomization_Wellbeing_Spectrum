@@ -2,6 +2,10 @@
 
 This repository collects scripts and data used for exploring GWAS hits and eQTL effects within the wellbeing spectrum.
 
+Raw data files are stored under `data/raw/` while generated results are written
+to `data/processed/`. For example, the `GWAS_hits` and `GTEX_BRAIN_ONLY`
+directories now live under `data/raw/`.
+
 ## Command line utilities
 
 The `scripts/` directory contains small command line tools. Each script accepts arguments and can also read default locations from the `DATA_DIR` environment variable.
